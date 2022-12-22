@@ -31,5 +31,11 @@
 *.out
 *.app
 
+# Mac OS X files
+.DS_STORE
+
+# CLion API directories
+./.idea
+
 # CMake build files
 ./cmake-build-debug
