@@ -47,15 +47,34 @@ public:
 
         return rootData;
     };
-    void add(const T &data, std::function<const int(const T &, const T &)> comparator) {
+    void add(const T &data,
+             std::function<const int (const T &, const T &)> comparator) {
         // TODO
     }
     void clear() {
         // TODO
     }
-    Node *find(const T &data, std::function<const int(const T &, const T &)> comparator) const {
-        // TODO
-        return nullptr;
+
+    /*
+     * Return pointer to a node which contains the data or a nullptr if the data
+     * is not in the tree
+     */
+    Node *find(const T &data,
+               std::function<const int (const T &,const T &)> comparator) const {
+        Node *currentNode{_root};
+
+        while (nullptr != currentNode) {
+            int result = comparator(currentNode->_data, data);
+            if(0 == result) {
+                break;
+            } else if (0 < result) {
+                currentNode = currentNode->_leftChild;
+            } else {
+                currentNode = currentNode->_rightChild;
+            }
+        }
+
+        return currentNode;
     }
     void preOrder(std::vector<int> &vectorOfOrder) const {
         // TODO
