@@ -49,7 +49,40 @@ public:
     };
     void add(const T &data,
              std::function<const int (const T &, const T &)> comparator) {
-        // TODO
+        if (_root == nullptr) {
+            _root = new Node(_size++, data);
+            return;
+        }
+
+        Node *currentNode{_root};
+        Node *parentNode{nullptr};
+        bool isLeft{};
+
+        while (nullptr != currentNode) {
+            int result = comparator(currentNode->_data, data);
+
+            if (0 == result) {
+                return;
+            } else if (0 < result) {
+                parentNode = currentNode;
+                currentNode = currentNode->_leftChild;
+                isLeft = true;
+            } else {
+                parentNode = currentNode;
+                currentNode = currentNode->_rightChild;
+                isLeft = false;
+            }
+        }
+
+        currentNode = new Node(_size++, data, parentNode, nullptr, nullptr, true);
+
+        if (isLeft) {
+            parentNode->_leftChild = currentNode;
+        } else {
+            parentNode->_rightChild = currentNode;
+        }
+
+        addHelper(currentNode);
     }
     void clear() {
         // TODO
@@ -65,7 +98,7 @@ public:
 
         while (nullptr != currentNode) {
             int result = comparator(currentNode->_data, data);
-            if(0 == result) {
+            if (0 == result) {
                 break;
             } else if (0 < result) {
                 currentNode = currentNode->_leftChild;
@@ -92,6 +125,9 @@ private:
     int _size{};
     Node *_root{};
 
+    void addHelper(Node *child) {
+        // TODO
+    }
     void rotateLeft(Node *parent) {
         // TODO
     }
