@@ -209,7 +209,28 @@ private:
         _root->_isRed = false;
     }
     void rotateLeft(Node *parent) {
-        // TODO
+        if (nullptr == parent || nullptr == parent->_rightChild) {
+            return;
+        }
+
+        Node *child = parent->_rightChild;
+        parent->_rightChild = child->_leftChild;
+
+        if (nullptr != child->_leftChild) {
+            child->_leftChild->_parent = parent;
+        }
+        child->_parent = parent->_parent;
+
+        if (nullptr == parent->_parent) {
+            _root = child;
+        } else if(parent == parent->_parent->_leftChild) {
+            parent->_parent->_leftChild = child;
+        } else {
+            parent->_parent->_rightChild = child;
+        }
+
+        child->_leftChild = parent;
+        parent->_parent = child;
     }
     void rotateRight(Node *parent) {
         // TODO
