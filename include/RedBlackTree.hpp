@@ -233,7 +233,28 @@ private:
         parent->_parent = child;
     }
     void rotateRight(Node *parent) {
-        // TODO
+        if(nullptr == parent || nullptr == parent->_leftChild) {
+            return;
+        }
+
+        Node *child = parent->_leftChild;
+        parent->_leftChild = child->_rightChild;
+
+        if (nullptr != child->_rightChild) {
+            child->_rightChild->_parent = parent;
+        }
+        child->_parent = parent->_parent;
+
+        if (nullptr == parent->_parent) {
+            _root = child;
+        } else if(parent == parent->_parent->_leftChild) {
+            parent->_parent->_leftChild = child;
+        } else {
+            parent->_parent->_rightChild = child;
+        }
+
+        child->_rightChild = parent;
+        parent->_parent = child;
     }
 };
 
