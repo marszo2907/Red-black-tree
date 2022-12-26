@@ -126,7 +126,87 @@ private:
     Node *_root{};
 
     void addHelper(Node *child) {
-        // TODO
+        while (_root != child && child->_parent->_isRed) {
+            /*
+             * Case 1: A child's parent is a right child.
+             */
+            if (nullptr != child->_parent->_parent
+                && child->_parent == child->_parent->_parent->_rightChild) {
+                Node *uncle{child->_parent->_parent->_leftChild};
+
+                /*
+                 * Case 1.A: A child's uncle is red.
+                 * Fix: Set a grandparent's color to red and a parent's and an
+                 * uncle's color to black. Check if there is a conflict between
+                 * a grandparent and a great-grandparent in a next iteration.
+                 */
+                if (nullptr != uncle && uncle->_isRed) {
+                    uncle->_isRed = false;
+                    child->_parent->_isRed = false;
+                    child->_parent->_parent->_isRed = true;
+                    child = child->_parent->_parent;
+                } else {
+                    /*
+                     * Case 1.B: The right-left conflict.
+                     * Fix: Perform a right rotation of a child-parent pair. Leads
+                     * to the right-right conflict.
+                     */
+                    if (child == child->_parent->_leftChild) {
+                        child = child->_parent;
+                        rotateRight(child);
+                    }
+
+                    /*
+                     * Case 1.C: The right-right conflict.
+                     * Fix: Set a grandparent's color to red and a parent's color
+                     * to black. Perform a left rotation of a parent-grandparent
+                     * pair.
+                     */
+                    child->_parent->_isRed = false;
+                    child->_parent->_parent->_isRed = true;
+                    rotateLeft(child->_parent->_parent);
+                }
+            /*
+             * Case 2: Child's parent is a left child.
+             */
+            } else {
+                Node *uncle {child->_parent->_parent->_rightChild};
+
+                /*
+                 * Case 2.A: Child's uncle is red.
+                 * Fix: Set a grandparent's color to red and a parent's and an
+                 * uncle's color to black. Check if there is a conflict between
+                 * a grandparent and a great-grandparent in a next iteration.
+                 */
+                if(nullptr != uncle && uncle->_isRed) {
+                    uncle->_isRed = false;
+                    child->_parent->_isRed = false;
+                    child->_parent->_parent->_isRed = true;
+                    child = child->_parent->_parent;
+                } else {
+                    /*
+                     * Case 2.B: The left-right conflict.
+                     * Fix: Perform a left rotation of a child-parent pair. Leads
+                     * to the left-left conflict.
+                     */
+                    if (child == child->_parent->_rightChild) {
+                        child = child->_parent;
+                        rotateLeft(child);
+                    }
+                    /*
+                     * Case 1.C: The left-left conflict.
+                     * Fix: Set a grandparent's color to red and a parent's color
+                     * to black. Perform a right rotation of a parent-grandparent
+                     * pair.
+                     */
+                    child->_parent->_isRed = false;
+                    child->_parent->_parent->_isRed = true;
+                    rotateRight(child->_parent->_parent);
+                }
+            }
+        }
+
+        _root->_isRed = false;
     }
     void rotateLeft(Node *parent) {
         // TODO
