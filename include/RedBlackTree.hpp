@@ -24,30 +24,31 @@ public:
 
         std::string toString() const {
             std::stringstream outputStream{};
+
             outputStream << "ID: " << _id << "\t\t" << "NODE DATA: " << _data
                     << "\t\tCOLOR: ";
-            if(_isRed) {
+            if (_isRed) {
                 outputStream << "R\t\t";
             } else {
                 outputStream << "B\t\t";
             }
 
             outputStream << "PARENT: ";
-            if(nullptr == _parent) {
+            if (nullptr == _parent) {
                 outputStream << "NA\t\t";
             } else {
                 outputStream << _parent->_id << "\t\t";
             }
 
             outputStream << "LEFT CHILD: ";
-            if(nullptr == _leftChild) {
+            if (nullptr == _leftChild) {
                 outputStream << "NA\t\t";
             } else {
                 outputStream << _leftChild->_id << "\t\t";
             }
 
             outputStream << "RIGHT CHILD: ";
-            if(nullptr == _rightChild) {
+            if (nullptr == _rightChild) {
                 outputStream << "NA\t\t";
             } else {
                 outputStream << _rightChild->_id << "\t\t";
@@ -63,8 +64,7 @@ public:
     }
 
     int getHeight() const {
-        // TODO
-        return 0;
+        return heightHelper(_root);
     }
     T getRootData() const {
         T rootData{};
@@ -146,7 +146,9 @@ public:
     }
     std::string toString() const {
         std::stringstream outputStream{};
+
         printHelper(outputStream, _root);
+
         return outputStream.str();
     }
 
@@ -207,7 +209,7 @@ private:
                  * uncle's color to black. Check if there is a conflict between
                  * a grandparent and a great-grandparent in a next iteration.
                  */
-                if(nullptr != uncle && uncle->_isRed) {
+                if (nullptr != uncle && uncle->_isRed) {
                     uncle->_isRed = false;
                     child->_parent->_isRed = false;
                     child->_parent->_parent->_isRed = true;
@@ -262,7 +264,7 @@ private:
         parent->_parent = child;
     }
     void rotateRight(Node *parent) {
-        if(nullptr == parent || nullptr == parent->_leftChild) {
+        if (nullptr == parent || nullptr == parent->_leftChild) {
             return;
         }
 
@@ -302,25 +304,38 @@ private:
         }
     }
     void preOrderHelper(std::vector<int> &vectorOfOrder, const Node *node) const {
-        if(nullptr != node) {
+        if (nullptr != node) {
             vectorOfOrder.push_back(node->_id);
             preOrderHelper(vectorOfOrder, node->_leftChild);
             preOrderHelper(vectorOfOrder, node->_rightChild);
         }
     }
     void inOrderHelper(std::vector<int> &vectorOfOrder, const Node *node) const {
-        if(nullptr != node) {
+        if (nullptr != node) {
             inOrderHelper(vectorOfOrder, node->_leftChild);
             vectorOfOrder.push_back(node->_id);
             inOrderHelper(vectorOfOrder, node->_rightChild);
         }
     }
     void printHelper(std::stringstream &outputStream, const Node *node) const {
-        if(nullptr != node) {
+        if (nullptr != node) {
             outputStream << node->toString() << std::endl;
             printHelper(outputStream, node->_leftChild);
             printHelper(outputStream, node->_rightChild);
         }
+    }
+    int heightHelper(const Node *node) const {
+        int leftHeight{};
+        int rightHeight{};
+
+        if (nullptr != node) {
+            leftHeight = heightHelper(node->_leftChild);
+            rightHeight = heightHelper(node->_rightChild);
+
+            return (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
+        }
+
+        return 0;
     }
 };
 
