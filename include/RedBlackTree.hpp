@@ -111,10 +111,10 @@ public:
         return currentNode;
     }
     void preOrder(std::vector<int> &vectorOfOrder) const {
-        // TODO
+        preOrderHelper(vectorOfOrder, _root);
     }
     void inOrder(std::vector<int> &vectorOfOrder) const {
-        // TODO
+        inOrderHelper(vectorOfOrder, _root);
     }
     std::string toString() const {
         std::stringstream outputStream{};
@@ -271,6 +271,20 @@ private:
             }
 
             delete node;
+        }
+    }
+    void preOrderHelper(std::vector<int> &vectorOfOrder, const Node *node) const {
+        if(nullptr != node) {
+            vectorOfOrder.push_back(node->_id);
+            preOrderHelper(vectorOfOrder, node->_leftChild);
+            preOrderHelper(vectorOfOrder, node->_rightChild);
+        }
+    }
+    void inOrderHelper(std::vector<int> &vectorOfOrder, const Node *node) const {
+        if(nullptr != node) {
+            inOrderHelper(vectorOfOrder, node->_leftChild);
+            vectorOfOrder.push_back(node->_id);
+            inOrderHelper(vectorOfOrder, node->_rightChild);
         }
     }
 };
