@@ -24,7 +24,35 @@ public:
 
         std::string toString() const {
             std::stringstream outputStream{};
-            // TODO
+            outputStream << "ID: " << _id << "\t\t" << "NODE DATA: " << _data
+                    << "\t\tCOLOR: ";
+            if(_isRed) {
+                outputStream << "R\t\t";
+            } else {
+                outputStream << "B\t\t";
+            }
+
+            outputStream << "PARENT: ";
+            if(nullptr == _parent) {
+                outputStream << "NA\t\t";
+            } else {
+                outputStream << _parent->_id << "\t\t";
+            }
+
+            outputStream << "LEFT CHILD: ";
+            if(nullptr == _leftChild) {
+                outputStream << "NA\t\t";
+            } else {
+                outputStream << _leftChild->_id << "\t\t";
+            }
+
+            outputStream << "RIGHT CHILD: ";
+            if(nullptr == _rightChild) {
+                outputStream << "NA\t\t";
+            } else {
+                outputStream << _rightChild->_id << "\t\t";
+            }
+
             return outputStream.str();
         }
     };
@@ -118,7 +146,7 @@ public:
     }
     std::string toString() const {
         std::stringstream outputStream{};
-        // TODO
+        printHelper(outputStream, _root);
         return outputStream.str();
     }
 
@@ -285,6 +313,13 @@ private:
             inOrderHelper(vectorOfOrder, node->_leftChild);
             vectorOfOrder.push_back(node->_id);
             inOrderHelper(vectorOfOrder, node->_rightChild);
+        }
+    }
+    void printHelper(std::stringstream &outputStream, const Node *node) const {
+        if(nullptr != node) {
+            outputStream << node->toString() << std::endl;
+            printHelper(outputStream, node->_leftChild);
+            printHelper(outputStream, node->_rightChild);
         }
     }
 };
