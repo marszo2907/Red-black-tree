@@ -77,7 +77,7 @@ public:
     };
     void add(const T &data,
              std::function<const int (const T &, const T &)> comparator) {
-        if (_root == nullptr) {
+        if (nullptr == _root) {
             _root = new Node(_size++, data);
             return;
         }
