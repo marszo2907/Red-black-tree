@@ -9,7 +9,7 @@
 #define TEST_VECTOR_SIZE    8
 
 /*
- * test() function was provided by Jacek Klimaszewski from West Pomeranian
+ * test() function was provided by Jacek Klimaszewski from the West Pomeranian
  * University of Technology in Szczecin
  * source: http://jklimaszewski.zut.edu.pl/a2/
  */
