@@ -16,8 +16,8 @@ public:
         Node *_rightChild{};
         bool _isRed{};
 
-        Node(const int &id, const T &data, const Node *parent = nullptr,
-             const Node *leftChild = nullptr, const Node *rightChild = nullptr,
+        Node(const int &id, const T &data, Node *parent = nullptr,
+             Node *leftChild = nullptr, Node *rightChild = nullptr,
              const bool &isRed = false) :
              _id(id), _data(data), _parent(parent), _leftChild(leftChild),
              _rightChild(rightChild), _isRed(isRed) {}
@@ -85,7 +85,8 @@ public:
         addHelper(currentNode);
     }
     void clear() {
-        // TODO
+        clearHelper(_root);
+        _root = nullptr;
     }
 
     /*
@@ -255,6 +256,22 @@ private:
 
         child->_rightChild = parent;
         parent->_parent = child;
+    }
+    void clearHelper(Node *node) {
+        if (nullptr != node) {
+            clearHelper(node->_leftChild);
+            clearHelper(node->_rightChild);
+
+            if (nullptr != node->_parent) {
+                if (node == node->_parent->_leftChild) {
+                    node->_parent->_leftChild = nullptr;
+                } else {
+                    node->_parent->_rightChild = nullptr;
+                }
+            }
+
+            delete node;
+        }
     }
 };
 
